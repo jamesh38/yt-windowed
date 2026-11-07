@@ -36,6 +36,7 @@
   let wasTheater = false;
   let button = null;
   let topButton = null;
+  let theaterObserver = null;
 
   const isWatchPage = () => /^\/(watch|live\/|clip\/)/.test(location.pathname);
   const watchEl = () =>
@@ -50,6 +51,21 @@
     setTimeout(() => setTheater(on, attempts - 1), 300);
   }
 
+  // Windowed mode only works on top of theater mode. If the user leaves
+  // theater mode (button or "t" key) while we're active, exit cleanly instead
+  // of stretching the default-layout player.
+  function watchTheater() {
+    theaterObserver?.disconnect();
+    const el = watchEl();
+    if (!el) return;
+    let sawTheater = isTheater();
+    theaterObserver = new MutationObserver(() => {
+      if (isTheater()) sawTheater = true;
+      else if (active && sawTheater) disable();
+    });
+    theaterObserver.observe(el, { attributes: true, attributeFilter: ["theater"] });
+  }
+
   function applyBodyClasses() {
     const cl = document.body.classList;
     cl.toggle("ywf-on", active);
@@ -62,6 +78,7 @@
     if (active || !isWatchPage()) return;
     active = true;
     wasTheater = isTheater();
+    watchTheater();
     setTheater(true);
     window.scrollTo(0, 0);
     applyBodyClasses();
@@ -72,6 +89,8 @@
   function disable() {
     if (!active) return;
     active = false;
+    theaterObserver?.disconnect();
+    theaterObserver = null;
     setMini(false);
     applyBodyClasses();
     document.body.classList.remove("ywf-scrolled");
@@ -118,6 +137,7 @@
       if (injectButton() || --tries <= 0) {
         clearInterval(timer);
         if (active) {
+          watchTheater();
           setTheater(true);
           nudgeLayout();
         } else if (settings.autoEnable) {
