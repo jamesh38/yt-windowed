@@ -1,11 +1,14 @@
 ---
 name: release
-description: Bump the version, lint, sign the extension on Mozilla Add-ons (unlisted), fetch the signed .xpi, hand it off, and commit/push. Use when asked to sign, release, ship, publish a new version, or "get a new xpi".
+description: Bump the version, lint, submit the extension to Mozilla Add-ons (listed), fetch the signed .xpi, and commit/push. Use when asked to sign, release, ship, publish a new version, or "get a new xpi".
 ---
 
-# Release a signed build
+# Release a new version
 
-The extension is distributed as an **unlisted** add-on on addons.mozilla.org (AMO): Mozilla signs it so it stays installed in Firefox / Zen, but it is not searchable in the store. Each release is a new version under the same add-on ID.
+The extension is **listed** on addons.mozilla.org (AMO) as "Windowed Fullscreen for YouTube":
+https://addons.mozilla.org/firefox/addon/windowed-fullscreen-youtube/
+
+Installs from that page auto-update through Firefox / Zen's normal add-on update check, so a release is just: bump the version, submit, wait for review. No file hand-off is needed. Versions 1.0.0 and 1.0.1 were unlisted (self-distributed, no auto-update); don't go back to unlisted unless asked.
 
 ## Prerequisites
 
@@ -17,18 +20,20 @@ The extension is distributed as an **unlisted** add-on on addons.mozilla.org (AM
 
 1. **Bump `version` in `manifest.json`.** AMO rejects a version number it has already seen, even if that upload failed. Use patch bumps for fixes (`1.0.1` → `1.0.2`).
 2. **Do not change `browser_specific_settings.gecko.id`.** That ID is the add-on's identity on AMO; changing it creates a brand new add-on and breaks updates for installed copies.
-3. **Run the signing script** with an output dir *outside* the repo (scratchpad is ideal):
+3. **Update `amo-metadata.json`** only if the store summary/description should change (it's applied on listed submissions; `slug` max 30 chars).
+4. **Run the signing script** in the background (listed review can outlast a 10-minute tool timeout) with an output dir *outside* the repo:
    ```sh
-   scripts/sign.sh /path/to/scratchpad/signed
+   scripts/sign.sh /path/to/scratchpad/signed          # listed (default)
+   scripts/sign.sh /path/to/scratchpad/signed unlisted # private build, no auto-update
    ```
-   It lints (fails on any error), removes the stale `.amo-upload-uuid`, signs on the unlisted channel, and downloads the signed file as `yt-windowed-<version>-signed.xpi`. Approval is automated and usually takes under a few minutes.
-4. **Verify the XPI** before handing it off:
+   It lints (fails on any error), removes the stale `.amo-upload-uuid`, submits, waits up to 15 min for approval, and downloads the signed file. Listed versions go through review: usually automated and quick, sometimes hours. While waiting, `scripts/amo.py status` shows `unreviewed`; signed is `public`. Once `public`, every install updates by itself within about a day.
+5. **Verify the XPI** once signed:
    ```sh
    unzip -l <out>/yt-windowed-<version>-signed.xpi
    ```
-   It should contain only `manifest.json`, `content.js`, `content.css`, `options.*`, `icons/` and `META-INF/` (Mozilla's signature). No `scripts/`, `.claude/`, zips, or dotfiles.
-5. **Hand off the file.** If the person is working on a remote machine, upload the `.xpi` to their Google Drive (Drive connector, `contentMimeType: application/x-xpinstall`, `disableConversionToGoogleType: true`) and give them the link. Check the uploaded `fileSize` matches the local file. Install: `about:addons` → ⚙️ → *Install Add-on From File…*.
-6. **Commit and push** the version bump with the code changes.
+   It should contain only `manifest.json`, `content.js`, `content.css`, `options.*`, `icons/` and `META-INF/` (Mozilla's signature). No `scripts/`, `.claude/`, `amo-metadata.json`, zips, or dotfiles.
+6. **Hand off a file only if asked.** If the person wants the `.xpi` itself while working on a remote machine, upload it to their Google Drive (Drive connector, `contentMimeType: application/x-xpinstall`, `disableConversionToGoogleType: true`) and check the uploaded `fileSize` matches.
+7. **Commit and push** the version bump with the code changes.
 
 ## Checking status / recovering
 
@@ -45,6 +50,7 @@ scripts/amo.py download 1.0.1 /some/dir   # re-download a signed version
 - **Build output inside the repo gets bundled into the upload.** Always use an artifacts dir outside the source tree.
 - **`MISSING_DATA_COLLECTION_PERMISSIONS`**: AMO requires `gecko.data_collection_permissions` (`{"required": ["none"]}` here). That key needs `strict_min_version` ≥ 140 (desktop) and `gecko_android.strict_min_version` ≥ 142.
 - Lint must skip `scripts/` and `.claude/` (`--ignore-files`), otherwise it flags the shell/Python helpers.
+- **Store name** can't start with a third-party trademark ("YouTube …" is rejected); keep the "… for YouTube" form. AMO kept the first upload's name even after the manifest changed, so after a rename, PATCH `/api/v5/addons/addon/<id>/` with `{"name": {"en-US": "…"}}`.
 
 ## Privacy rules for this public repo
 

@@ -4,3 +4,4 @@ node_modules/
 .amo-upload-uuid
 *.xpi
 .env
+__pycache__/

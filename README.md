@@ -1,4 +1,4 @@
-# YouTube Windowed
+# Windowed Fullscreen for YouTube
 
 A Firefox / Zen extension that makes the YouTube player fill the whole browser window — like fullscreen, but without leaving the window — while still letting you scroll down to the comments.
 
@@ -20,7 +20,7 @@ It switches YouTube into theater mode, then CSS stretches the theater container 
 
 **Temporary (for development):** open `about:debugging#/runtime/this-firefox` → *Load Temporary Add-on…* → pick `manifest.json`.
 
-**Permanent:** build and sign it as an unlisted add-on with your own [AMO API keys](https://addons.mozilla.org/developers/addon/api/key/):
+**Permanent:** install from [addons.mozilla.org](https://addons.mozilla.org/firefox/addon/windowed-fullscreen-youtube/). To publish your own fork, sign it with your own [AMO API keys](https://addons.mozilla.org/developers/addon/api/key/):
 
 ```sh
 npx web-ext sign --channel=unlisted --api-key=$AMO_JWT_ISSUER --api-secret=$AMO_JWT_SECRET

@@ -1,7 +1,7 @@
 {
   "manifest_version": 2,
-  "name": "YouTube Windowed",
-  "version": "1.0.1",
+  "name": "Windowed Fullscreen for YouTube",
+  "version": "1.0.2",
   "description": "Fill the browser window with the YouTube player, while still being able to scroll down to comments.",
   "icons": {
     "48": "icons/icon.svg",
@@ -9,7 +9,7 @@
   },
   "browser_action": {
     "default_icon": "icons/icon.svg",
-    "default_title": "YouTube Windowed",
+    "default_title": "Windowed Fullscreen for YouTube",
     "default_popup": "options.html"
   },
   "options_ui": {

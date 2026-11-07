@@ -1,0 +1,13 @@
+{
+  "slug": "windowed-fullscreen-youtube",
+  "categories": ["photos-music-videos"],
+  "summary": {
+    "en-US": "Fill the browser window with the YouTube player, like fullscreen but inside the window, and still scroll down to the comments."
+  },
+  "description": {
+    "en-US": "Click the button in the player controls (or press ` ) to make the video fill the whole browser window without going into real fullscreen. Unlike similar add-ons, you can still scroll down to read comments and related videos; the YouTube header fades back in as you scroll.\n\nOptions:\n- Change the shortcut key\n- Auto-enable on every video\n- Turn scrolling on or off\n- Hide the scrollbar\n- Floating mini player while you read comments\n\nEsc exits. Turning off theater mode also exits.\n\nNo data collection, no network requests, no tracking. The only permission is storage, for your settings."
+  },
+  "version": {
+    "license": "MIT"
+  }
+}
