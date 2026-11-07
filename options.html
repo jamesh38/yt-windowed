@@ -1,0 +1,83 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>YouTube Windowed</title>
+    <style>
+      :root {
+        color-scheme: light dark;
+        --bg: #fff;
+        --fg: #0f0f0f;
+        --muted: #606060;
+        --border: #e5e5e5;
+        --accent: #e62117;
+      }
+      @media (prefers-color-scheme: dark) {
+        :root {
+          --bg: #1f1f1f;
+          --fg: #f1f1f1;
+          --muted: #aaa;
+          --border: #3a3a3a;
+        }
+      }
+      body {
+        margin: 0;
+        padding: 14px 16px;
+        min-width: 300px;
+        background: var(--bg);
+        color: var(--fg);
+        font: 13px/1.4 system-ui, sans-serif;
+      }
+      h1 {
+        margin: 0 0 10px;
+        font-size: 15px;
+      }
+      label {
+        display: flex;
+        gap: 10px;
+        align-items: flex-start;
+        padding: 8px 0;
+        border-top: 1px solid var(--border);
+        cursor: pointer;
+      }
+      label small {
+        display: block;
+        color: var(--muted);
+      }
+      input[type="checkbox"] {
+        accent-color: var(--accent);
+        margin-top: 2px;
+      }
+      #shortcut {
+        width: 48px;
+        margin-left: auto;
+        text-align: center;
+        font: inherit;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>YouTube Windowed</h1>
+    <label>
+      <span>Shortcut key<small>Click the box, then press a key</small></span>
+      <input id="shortcut" type="text" readonly />
+    </label>
+    <label>
+      <input type="checkbox" id="autoEnable" />
+      <span>Auto-enable<small>Turn on for every video you open</small></span>
+    </label>
+    <label>
+      <input type="checkbox" id="scrollable" />
+      <span>Allow scrolling<small>Scroll down to comments and related videos</small></span>
+    </label>
+    <label>
+      <input type="checkbox" id="hideScrollbar" />
+      <span>Hide scrollbar<small>Scrolling still works</small></span>
+    </label>
+    <label>
+      <input type="checkbox" id="miniPlayer" />
+      <span>Mini player on scroll<small>Float the video in the corner while reading comments</small></span>
+    </label>
+    <script src="options.js"></script>
+  </body>
+</html>

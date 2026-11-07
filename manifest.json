@@ -1,0 +1,33 @@
+{
+  "manifest_version": 2,
+  "name": "YouTube Windowed",
+  "version": "1.0.0",
+  "description": "Fill the browser window with the YouTube player, while still being able to scroll down to comments.",
+  "icons": {
+    "48": "icons/icon.svg",
+    "96": "icons/icon.svg"
+  },
+  "browser_action": {
+    "default_icon": "icons/icon.svg",
+    "default_title": "YouTube Windowed",
+    "default_popup": "options.html"
+  },
+  "options_ui": {
+    "page": "options.html"
+  },
+  "content_scripts": [
+    {
+      "matches": ["*://www.youtube.com/*"],
+      "js": ["content.js"],
+      "css": ["content.css"],
+      "run_at": "document_end"
+    }
+  ],
+  "permissions": ["storage"],
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "{c3dbc0ce-26e0-459f-9e46-16a8560bfb3c}",
+      "strict_min_version": "109.0"
+    }
+  }
+}

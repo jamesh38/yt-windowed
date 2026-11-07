@@ -1,0 +1,108 @@
+/* Player fills the viewport. Theater mode is forced by content.js, so the
+   full-bleed container is the one that holds the player. */
+body.ywf-on #full-bleed-container,
+body.ywf-on ytd-watch-grid #player-full-bleed-container,
+body.ywf-on ytd-app ytd-watch #player.ytd-watch {
+  height: 100vh !important;
+  max-height: 100vh !important;
+  min-height: 0 !important;
+}
+
+body.ywf-on #movie_player:not(.ywf-mini) {
+  width: 100% !important;
+  height: 100vh !important;
+}
+
+body.ywf-on .html5-video-container {
+  background-color: #000;
+}
+
+/* Pull the page up under the (now invisible) masthead. */
+body.ywf-on ytd-page-manager,
+body.ywf-on ytd-watch-flexy {
+  margin-top: 0 !important;
+}
+
+/* Masthead stays hidden over the video; reappears on hover, focus, or once
+   you scroll down to the comments. */
+body.ywf-on #masthead-container {
+  opacity: 0 !important;
+  transition: opacity 0.15s ease;
+}
+
+body.ywf-on #masthead-container:hover,
+body.ywf-on #masthead-container:focus-within,
+body.ywf-on.ywf-scrolled #masthead-container {
+  opacity: 1 !important;
+}
+
+body.ywf-on .ytp-chrome-top-buttons {
+  display: none !important;
+}
+
+/* Scroll lock when scrolling is disabled in options. */
+html:has(body.ywf-on.ywf-noscroll),
+body.ywf-on.ywf-noscroll {
+  overflow: hidden !important;
+}
+
+html:has(body.ywf-on.ywf-hide-scrollbar) {
+  scrollbar-width: none !important;
+}
+
+/* Our button in the player controls. */
+#ywf-btn {
+  display: inline-flex !important;
+  align-items: center;
+  justify-content: center;
+}
+
+#ywf-btn svg {
+  width: 20px;
+  height: 20px;
+  margin: auto;
+}
+
+/* Floating mini player while reading comments. */
+body.ywf-on #movie_player.ywf-mini {
+  position: fixed !important;
+  right: 16px;
+  bottom: 16px;
+  width: 480px !important;
+  height: 270px !important;
+  z-index: 2299;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+}
+
+body.ywf-on #movie_player.ywf-mini video {
+  width: 480px !important;
+  height: 270px !important;
+  left: 0 !important;
+  top: 0 !important;
+}
+
+body.ywf-on #movie_player.ywf-mini .ytp-chrome-bottom {
+  width: 456px !important;
+  left: 12px !important;
+}
+
+#ywf-top-btn {
+  display: none;
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  z-index: 70;
+  padding: 4px 10px;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  border-radius: 14px;
+  background: rgba(0, 0, 0, 0.6);
+  color: #fff;
+  font: 500 12px Roboto, Arial, sans-serif;
+  cursor: pointer;
+}
+
+body.ywf-on #movie_player.ywf-mini:hover #ywf-top-btn {
+  display: block;
+}
